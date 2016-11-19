@@ -106,11 +106,11 @@ class Diskcached
     begin
       write_cache_file( key, Marshal::dump(value) )
       flush_expired if gc_auto
-      return true
-    rescue
+    rescue Exception => e
       flush_expired if gc_auto
-      return false
+      raise e
     end
+    true
   end
   alias :add :set        # for memcached compatability
   alias :replace :set    # for memcached compatability
