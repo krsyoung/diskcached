@@ -149,7 +149,7 @@ class Diskcached
   private
   # creates the actual cache file
   def write_cache_file key, content
-    f = File.open(cache_file(key), File::RDWR|File::CREAT, 0644)
+    f = File.open(cache_file(key), File::RDWR|File::CREAT|File::BINARY, 0644)
 
     # make sure we actually get a lock (one that won't hang forever)
     return nil unless f.flock(File::LOCK_EX|File::LOCK_NB)
@@ -161,7 +161,7 @@ class Diskcached
 
   # reads the actual cache file
   def read_cache_file key
-    f = File.open( cache_file(key), "r" )
+    f = File.open( cache_file(key), "rb" )
     f.flock(File::LOCK_SH)
     out = f.read
     f.close
